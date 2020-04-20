@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;//
@@ -49,6 +52,22 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.lalala);
         listview.setAdapter(this.adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int pos, long id)
+            {
+                TextView name = (TextView) view.findViewById(android.R.id.text1);
+                Animal zwierz = db.pobierz(Integer.parseInt
+                        (name.getText().toString()));
+                Intent intencja = new
+                        Intent(getApplicationContext(),
+                        DodajWpis.class);
+                intencja.putExtra("element", zwierz);
+                startActivityForResult(intencja, 2);
+
+            }
+        });
+
 
         //to do lalala alal
         //dodałam komenta
@@ -92,6 +111,25 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged(); }
             //target.add(nowy);
             //adapter.notifyDataSetChanged();
+        }
+        if(requestCode==2 && resultCode==RESULT_OK){
+            Bundle extras = data.getExtras();
+           /* Toast.makeText(getApplicationContext(),
+                    "Data : " + data,
+                    Toast.LENGTH_SHORT).show();*/
+
+            Animal nowy = (Animal) extras.getSerializable("nowy");
+            if (nowy == null) {
+                Toast.makeText(getApplicationContext(),
+                        "Nie powiodło się",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                //String nowy = (String)extras.get("wpis");
+
+                this.db.aktualizuj(nowy);
+                adapter.changeCursor(db.lista());
+                adapter.notifyDataSetChanged(); }
+
         }
     }
 }
