@@ -5,18 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class MySQLite extends SQLiteOpenHelper {
-    private static final int
-            DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
     public MySQLite(Context context) {
         super(context, "animalsDB", null, DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase
-                                 database) {
+    public void onCreate(SQLiteDatabase db) {
         String DATABASE_CREATE =
                 "create table animals " +
                         "(_id integer primary key autoincrement," +
@@ -24,7 +23,7 @@ public class MySQLite extends SQLiteOpenHelper {
                         "kolor text not null," +
                         "wielkosc real not null," +
                         "opis text not null);";
-        database.execSQL(DATABASE_CREATE);
+        db.execSQL(DATABASE_CREATE);
     }
 
     @Override
@@ -71,6 +70,9 @@ public class MySQLite extends SQLiteOpenHelper {
     public Animal pobierz(int id){
         SQLiteDatabase db =
                 this.getReadableDatabase();
+        if (db == null ){
+            return null;
+        }else {
         Cursor cursor =
                 db.query("animals", //a. table name
                         new String[] { "_id",
@@ -90,14 +92,17 @@ public class MySQLite extends SQLiteOpenHelper {
 
         zwierz.setId(Integer.parseInt(cursor.getString(0))
         );
-        return zwierz;
+        return zwierz;}
 
     }
 
     public Cursor lista(){
         SQLiteDatabase db =
                 this.getReadableDatabase();
-        return db.rawQuery("Select * from animals",null);
+        if (db == null ){
+            return null;
+        }else {
+        return db.rawQuery("Select * from animals",null);}
     }
 
 
