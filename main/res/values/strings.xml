@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">AndroidLab</string>
+    <string name="app_name">Lista Zwierzaków</string>
+    <string name="animal">Nazwa Zwierzęcia</string>
+    <string name="add">Dodaj</string>
+
+
 </resources>
