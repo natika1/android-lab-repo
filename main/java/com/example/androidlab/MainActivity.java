@@ -3,7 +3,11 @@ package com.example.androidlab;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ListViewCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -24,15 +28,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         this.target = new ArrayList<String>();
         this.target.addAll(Arrays.asList(values));
         this.adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,this.target);
         ListView listview = (ListView) findViewById(R.id.lalala);
         listview.setAdapter(this.adapter);
 
-                //to do lalala alal
+        //to do lalala alal
         //dodałam komenta
         //jakies dodatkowe zmiany
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    public void nowyWpis(MenuItem mi)
+    {
+        Intent intencja = new Intent(this,
+                DodajWpis.class);
+        startActivityForResult(intencja, 1);
     }
 }
