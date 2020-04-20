@@ -52,21 +52,35 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.lalala);
         listview.setAdapter(this.adapter);
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int pos, long id)
             {
                 TextView name = (TextView) view.findViewById(android.R.id.text1);
-                Animal zwierz = db.pobierz(Integer.parseInt
-                        (name.getText().toString()));
-                Intent intencja = new
-                        Intent(getApplicationContext(),
-                        DodajWpis.class);
+                Animal zwierz = db.pobierz(Integer.parseInt (name.getText().toString()));
+                Intent intencja = new Intent(getApplicationContext(), DodajWpis.class);
                 intencja.putExtra("element", zwierz);
                 startActivityForResult(intencja, 2);
 
             }
         });
+
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView name = (TextView) view.findViewById(android.R.id.text1);
+                Animal zwierz = db.pobierz(Integer.parseInt (name.getText().toString()));
+                int idZ  = zwierz.getId();
+                String idS = Integer.toString(idZ);
+                db.usun(idS);
+                adapter.changeCursor(db.lista());
+                adapter.notifyDataSetChanged();
+                return true;
+
+            }
+        });
+
 
 
         //to do lalala alal
@@ -131,5 +145,6 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged(); }
 
         }
+
     }
 }
